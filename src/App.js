@@ -99,6 +99,21 @@ const App = () => {
     }
   };
 
+  const moveIntoSquareBelow = () => {
+    for (let i = 0; i < 64 - width; i++) {
+      const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+      const isFirstRow = firstRow.includes(i)
+      if (isFirstRow && currentColorArrangement[i] === '') {
+        let randomNumber = Math.floor(Math.random()*candyColors.length)
+        currentColorArrangement[i] = candyColors[randomNumber];
+      }
+      if (currentColorArrangement[i + width] === "") {
+        currentColorArrangement[i + width] = currentColorArrangement[i];
+        currentColorArrangement[i] = "";
+      }
+    }
+  };
+
   // creating a function that generates 64
   const createBoard = () => {
     // we are going to save the randomColorArrangment to
@@ -138,12 +153,20 @@ const App = () => {
       checkForColumnOfThree();
       checkForRowOfFour();
       checkForRowOfThree();
+      moveIntoSquareBelow();
       // setting a new currentColorArrangment
       setCurrentColorArrangement([...currentColorArrangement]);
-    }, 100);
+    }, 1000);
 
     return () => clearInterval(timer);
-  }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, currentColorArrangement]);
+  }, [
+    checkForColumnOfFour,
+    checkForRowOfFour,
+    checkForColumnOfThree,
+    checkForRowOfThree,
+    moveIntoSquareBelow,
+    currentColorArrangement,
+  ]);
 
   // console.log(currentColorArrangement);
 
